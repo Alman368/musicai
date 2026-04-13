@@ -5,14 +5,13 @@ Proyecto final de Deep Learning sobre generacion de musica de piano comparando d
 - `musiclstm/`: implementacion tipo PerformanceRNN basada en LSTM
 - `musictransformer/`: implementacion Music Transformer con Relative Position Representations
 
-Esta version del repositorio esta preparada como portfolio en GitHub. Conserva el codigo, la memoria, las metricas y ahora tambien todos los ejemplos generados en un formato escuchable y ligero para web.
+Esta version del repositorio esta preparada como portfolio en GitHub. Conserva el codigo, la memoria, las metricas y todos los ejemplos generados, anadiendo tambien versiones MP3 para escucha web.
 
 ## Lo mas importante
 
 - Memoria final: [docs/report/trabajo_final_deep_learning.pdf](docs/report/trabajo_final_deep_learning.pdf)
 - Fuente LaTeX: [docs/report/trabajo.tex](docs/report/trabajo.tex)
 - Propuesta inicial: [docs/report/propuesta-trabajo-music.pdf](docs/report/propuesta-trabajo-music.pdf)
-- Resumen comparativo: [COMPARISON_SUMMARY.md](COMPARISON_SUMMARY.md)
 - Galeria de escucha para GitHub Pages: [docs/index.html](docs/index.html)
 
 ## Resultados
@@ -32,9 +31,10 @@ El Transformer fue el mejor modelo en calidad final, mientras que la LSTM result
 Se han incluido todos los ejemplos generados:
 
 - 45 archivos `MIDI` originales
-- 45 previews `MP3` para escucha rapida en navegador
+- 45 archivos `WAV` originales
+- 45 archivos `MP3` adicionales para escucha rapida en navegador
 
-Los audios convertidos ocupan aproximadamente 26 MB en total. Los `WAV` originales se han dejado fuera para que el repositorio siga siendo razonable de clonar y navegar.
+Los ejemplos se conservan en sus rutas originales dentro de `musiclstm/generated_pieces/` y `musictransformer/generated_pieces/`. Los `MP3` se han anadido como complemento para hacer la escucha mas comoda en navegador, sin sustituir a los ficheros finales entregados.
 
 ## GitHub Pages
 
@@ -61,11 +61,9 @@ Fuentes:
 musicai/
 ├── docs/
 │   ├── index.html               # Galeria reproducible para GitHub Pages
-│   ├── showcase/assets/         # Todos los MIDIs y MP3s
 │   └── report/                  # Memoria, propuesta y figuras
-├── COMPARISON_SUMMARY.md
-├── musiclstm/                   # Implementacion LSTM
-└── musictransformer/            # Implementacion Transformer
+├── musiclstm/                   # Implementacion LSTM + ejemplos finales
+└── musictransformer/            # Implementacion Transformer + ejemplos finales
 ```
 
 ## Lo que no se incluye
@@ -75,7 +73,6 @@ El entregable original superaba 1.3 GB e incluia:
 - dataset MAESTRO completo
 - checkpoints y pesos entrenados
 - logs de TensorBoard
-- `WAV` completos de trabajo
 
 Esos artefactos no estan versionados aqui para evitar un repositorio pesado y poco practico. Las rutas siguen documentadas en cada subproyecto por si se quiere reconstruir el entorno original.
 

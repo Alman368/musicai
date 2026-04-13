@@ -9,8 +9,9 @@ Implementacion de Music Transformer con Relative Position Representations para g
 - utilidades CLI y entrenamiento en `utilities/`
 - scripts de entrenamiento, evaluacion, generacion y preprocesado
 - metricas finales y trazas ligeras en `saved_models/results/`
+- todos los ejemplos finales en `generated_pieces/` (`.mid`, `.wav` y `.mp3`)
 
-Todos los ejemplos escuchables del proyecto estan centralizados en `docs/showcase/assets/` y en la galeria publicada desde `docs/index.html`.
+Los ejemplos del entregable final se conservan en su estructura original dentro de `generated_pieces/` y tambien aparecen enlazados desde `docs/index.html`.
 
 ## Que no incluye
 
@@ -20,7 +21,6 @@ Para que el repositorio siga siendo ligero en GitHub, no se versionan:
 - `dataset/e_piano/` con el dataset procesado
 - `saved_models/weights/` con los pesos entrenados
 - `saved_models/tensorboard/` con los logs
-- lotes completos de `generated_pieces/`
 
 ## Estructura
 
@@ -31,6 +31,7 @@ musictransformer/
 │   └── e_piano.py
 ├── utilities/
 ├── third_party/midi_processor/
+├── generated_pieces/
 ├── saved_models/
 │   ├── model_params.txt
 │   └── results/

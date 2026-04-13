@@ -378,8 +378,9 @@
         <h1>Piano generativo, comparado pieza a pieza.</h1>
         <p>
           Esta galeria recoge todos los ejemplos del trabajo final: 15 salidas del modelo
-          LSTM y 30 salidas del Music Transformer. Cada ejemplo incluye su archivo MIDI
-          original y una vista previa en MP3 para escucharlo directamente en el navegador.
+          LSTM y 30 salidas del Music Transformer. Cada ejemplo mantiene sus archivos
+          originales `MIDI` y `WAV`, y ademas incluye una version `MP3` para escucha
+          rapida directamente en navegador.
         </p>
         <div class="hero-links">
           <a class="pill" href="report/trabajo_final_deep_learning.pdf">Leer memoria final</a>
@@ -395,15 +396,15 @@
         </article>
         <article class="panel">
           <div class="stat-value">45</div>
-          <div class="stat-label">Previews MP3 listas para escucha web</div>
+          <div class="stat-label">WAVs originales preservados</div>
+        </article>
+        <article class="panel">
+          <div class="stat-value">45</div>
+          <div class="stat-label">MP3s listos para escucha web</div>
         </article>
         <article class="panel">
           <div class="stat-value">2</div>
           <div class="stat-label">Arquitecturas comparadas sobre MAESTRO</div>
-        </article>
-        <article class="panel">
-          <div class="stat-value">26 MB</div>
-          <div class="stat-label">Tamano total aproximado de la galeria</div>
         </article>
       </section>
 
@@ -424,8 +425,8 @@
           <h2>PerformanceRNN / LSTM</h2>
           <p>
             Implementacion recurrente inspirada en PerformanceRNN. Cada tarjeta incluye la
-            salida generada en MIDI y su preview comprimida en MP3 para escucharla sin salir
-            del navegador.
+            salida final en su estructura original y una preview comprimida en MP3 para
+            escucharla sin salir del navegador.
           </p>
         </div>
       </section>
@@ -447,9 +448,8 @@
       <section class="set-grid" id="transformer-grid"></section>
 
       <p class="footer">
-        Nota: los MP3 son previews derivadas de los WAV originales para mantener el
-        repositorio ligero. Los archivos MIDI conservan la salida original del proyecto y
-        son la referencia mas fiel para reutilizar o volver a sintetizar el audio.
+        Nota: la reproduccion embebida usa los archivos MP3, pero cada pieza tambien enlaza
+        a sus versiones MIDI y WAV reales dentro del propio repositorio en GitHub.
       </p>
     </main>
 
@@ -457,12 +457,19 @@
       const lstmSets = [512, 1536, 2048];
       const transformerSets = [512, 1536, 2048];
       const pieces = [1, 2, 3, 4, 5];
+      const rawBase = "https://raw.githubusercontent.com/Alman368/musicai/main";
 
       function makeLink(href, label) {
         const link = document.createElement("a");
         link.href = href;
         link.textContent = label;
+        link.target = "_blank";
+        link.rel = "noreferrer";
         return link;
+      }
+
+      function rawPath(path) {
+        return `${rawBase}/${path}`;
       }
 
       function audioBlock(label, src) {
@@ -502,7 +509,7 @@
           tracks.className = "tracks";
 
           pieces.forEach((piece) => {
-            const base = `showcase/assets/lstm/${length}/piece${piece}`;
+            const base = `musiclstm/generated_pieces/${length}/piece${piece}`;
             const card = document.createElement("article");
             card.className = "track-card";
             card.innerHTML = `
@@ -512,13 +519,14 @@
 
             const audio = document.createElement("div");
             audio.className = "audio-stack";
-            audio.appendChild(audioBlock("Generated take", `${base}.mp3`));
+            audio.appendChild(audioBlock("Generated take", rawPath(`${base}.mp3`)));
             card.appendChild(audio);
 
             const links = document.createElement("div");
             links.className = "track-links";
-            links.appendChild(makeLink(`${base}.mid`, "Descargar MIDI"));
-            links.appendChild(makeLink(`${base}.mp3`, "Abrir MP3"));
+            links.appendChild(makeLink(rawPath(`${base}.mid`), "MIDI"));
+            links.appendChild(makeLink(rawPath(`${base}.wav`), "WAV"));
+            links.appendChild(makeLink(rawPath(`${base}.mp3`), "MP3"));
             card.appendChild(links);
 
             tracks.appendChild(card);
@@ -550,7 +558,7 @@
           tracks.className = "tracks";
 
           pieces.forEach((piece) => {
-            const base = `showcase/assets/transformer/${length}/piece${piece}`;
+            const base = `musictransformer/generated_pieces/${length}/piece${piece}`;
             const card = document.createElement("article");
             card.className = "track-card";
             card.innerHTML = `
@@ -560,16 +568,18 @@
 
             const audio = document.createElement("div");
             audio.className = "audio-stack";
-            audio.appendChild(audioBlock("Primer", `${base}/primer.mp3`));
-            audio.appendChild(audioBlock("Random continuation", `${base}/rand.mp3`));
+            audio.appendChild(audioBlock("Primer", rawPath(`${base}/primer.mp3`)));
+            audio.appendChild(audioBlock("Random continuation", rawPath(`${base}/rand.mp3`)));
             card.appendChild(audio);
 
             const links = document.createElement("div");
             links.className = "track-links";
-            links.appendChild(makeLink(`${base}/primer.mid`, "Primer MIDI"));
-            links.appendChild(makeLink(`${base}/primer.mp3`, "Primer MP3"));
-            links.appendChild(makeLink(`${base}/rand.mid`, "Generated MIDI"));
-            links.appendChild(makeLink(`${base}/rand.mp3`, "Generated MP3"));
+            links.appendChild(makeLink(rawPath(`${base}/primer.mid`), "Primer MIDI"));
+            links.appendChild(makeLink(rawPath(`${base}/primer.wav`), "Primer WAV"));
+            links.appendChild(makeLink(rawPath(`${base}/primer.mp3`), "Primer MP3"));
+            links.appendChild(makeLink(rawPath(`${base}/rand.mid`), "Generated MIDI"));
+            links.appendChild(makeLink(rawPath(`${base}/rand.wav`), "Generated WAV"));
+            links.appendChild(makeLink(rawPath(`${base}/rand.mp3`), "Generated MP3"));
             card.appendChild(links);
 
             tracks.appendChild(card);

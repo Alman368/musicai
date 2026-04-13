@@ -8,8 +8,9 @@ Implementacion en PyTorch Lightning de una version tipo PerformanceRNN para gene
 - configuracion de entrenamiento en `config.yaml`
 - resumen de resultados en `training_results.txt`
 - grafica final en `final_training_metrics.png`
+- todos los ejemplos finales en `generated_pieces/` (`.mid`, `.wav` y `.mp3`)
 
-Todos los ejemplos escuchables del proyecto estan centralizados en `docs/showcase/assets/` y en la galeria publicada desde `docs/index.html`.
+Los ejemplos del entregable final se conservan en su estructura original dentro de `generated_pieces/` y tambien aparecen enlazados desde `docs/index.html`.
 
 ## Que no incluye
 
@@ -17,7 +18,6 @@ Para mantener el repositorio limpio en GitHub, esta carpeta no versiona:
 
 - `data/` con el dataset MAESTRO
 - `runs/` con checkpoints y logs
-- lotes completos de `generated_pieces/`
 
 ## Estructura
 
@@ -33,6 +33,7 @@ musiclstm/
 ├── visualize_training.py
 ├── extract_metrics.py
 ├── config.yaml
+├── generated_pieces/
 ├── requirements.txt
 └── final_training_metrics.png
 ```

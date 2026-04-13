@@ -6,7 +6,7 @@ Esta carpeta esta preparada para publicarse con GitHub Pages usando `/docs` como
 
 - `index.html`: galeria principal para escuchar todos los ejemplos
 - `report/`: memoria, propuesta y figuras
-- `showcase/assets/`: todos los archivos `MIDI` y sus previews `MP3`
+- la galeria referencia los archivos reales del repo en `musiclstm/generated_pieces/` y `musictransformer/generated_pieces/`
 
 ## Activacion
 

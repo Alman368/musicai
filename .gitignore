@@ -8,16 +8,11 @@ venv/
 
 # Large local artifacts intentionally kept out of Git
 musiclstm/data/
-musiclstm/generated_pieces/
 musiclstm/runs/
 musiclstm/*.mag
 
 musictransformer/dataset/maestro/
 musictransformer/dataset/e_piano/
-musictransformer/generated_pieces/
 musictransformer/saved_models/weights/
 musictransformer/saved_models/tensorboard/
 musictransformer/saved_models/results/*.pickle
-
-# Audio previews are stored as MP3 in docs/showcase; avoid committing heavy WAV exports there.
-docs/showcase/assets/**/*.wav
