@@ -1,0 +1,24 @@
+
+================================================================================
+PERFNET - FINAL TRAINING RESULTS
+================================================================================
+
+ARCHITECTURE:
+  Model Type:           PerformanceRNN (Magenta replication)
+  Vocabulary Size:      388
+  Embedding Dim:        256
+  LSTM Hidden Units:    512
+  LSTM Layers:          3
+  Dropout:              0.3
+
+TRAINING:
+  Learning Rate:        0.002
+  Gradient Clip:        3.0
+  Final Epoch:          149
+  Total Steps:          237750
+
+MODEL SIZE:
+  Total Parameters:     6,077,828
+  Model Size (MB):      23.19
+
+================================================================================

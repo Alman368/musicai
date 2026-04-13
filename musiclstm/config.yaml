@@ -1,0 +1,34 @@
+# PerformanceRNN Training Configuration
+# EXACT Magenta PerformanceRNN replication with embedding layer
+# Reference: https://magenta.tensorflow.org/performance-rnn
+
+# Model Architecture (Magenta with embedding)
+# Input: event_ids [batch, seq_len] integers 0-387
+# Embedding(388, 256) → 3×LSTM(512, dropout=0.3) → Dropout(0.3) → Dense(388)
+model:
+  vocab_size: 388          # 128 NOTE_ON + 128 NOTE_OFF + 100 TIME_SHIFT + 32 VELOCITY
+  embedding_size: 256      # Embedding dimension
+  hidden_size: 512         # LSTM hidden units
+  num_layers: 3            # Number of LSTM layers
+  dropout: 0.3             # Recurrent dropout + output dropout
+  learning_rate: 0.002     # Adam learning rate
+  clip_norm: 3.0           # Gradient clipping norm
+
+# Data Loading
+data:
+  data_dir: "./data"       # Path to MAESTRO dataset
+  sequence_length: 512     # Sequence length (teacher forcing)
+  batch_size: 64           # Training batch size
+  stride: 256              # Sliding window stride (256=50% overlap, 512=no overlap)
+  file_ext: ".mid,.midi"   # MIDI file extensions
+  num_workers: 4           # DataLoader workers (adjust based on CPU cores)
+  val_split: 0.1           # 10% validation split
+
+# Training
+trainer:
+  max_epochs: 150                   # Maximum training epochs
+  gradient_clip_val: 3.0            # Gradient clipping (matches Magenta)
+  save_every_n_minutes: 30          # Checkpoint interval
+  run_dir: "runs"                   # Base directory for runs
+  enable_early_stopping: false      # Early stopping disabled by default
+  early_stopping_patience: 10       # Patience for early stopping
