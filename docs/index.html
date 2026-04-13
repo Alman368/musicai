@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MusicAI Showcase</title>
+    <meta
+      name="description"
+      content="Galeria de audio del proyecto final MusicAI: comparativa entre LSTM y Music Transformer para generacion de musica de piano."
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    >
+    <style>
+      :root {
+        --paper: #f3eee3;
+        --paper-2: #e6dcc9;
+        --ink: #172126;
+        --muted: #58656d;
+        --rust: #b65d27;
+        --teal: #1f6f78;
+        --sand: #d4b483;
+        --card: rgba(255, 252, 245, 0.75);
+        --line: rgba(23, 33, 38, 0.12);
+        --shadow: 0 18px 60px rgba(23, 33, 38, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font-family: "Space Grotesk", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(182, 93, 39, 0.22), transparent 32%),
+          radial-gradient(circle at top right, rgba(31, 111, 120, 0.18), transparent 28%),
+          linear-gradient(180deg, #f7f3ea 0%, #efe6d6 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(23, 33, 38, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(23, 33, 38, 0.03) 1px, transparent 1px);
+        background-size: 26px 26px;
+        mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(1180px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 28px 0 72px;
+      }
+
+      .hero,
+      .panel,
+      .set-card,
+      .track-card {
+        background: var(--card);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        box-shadow: var(--shadow);
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 28px;
+        padding: 36px;
+        animation: rise 700ms ease both;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        right: -60px;
+        top: -70px;
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(circle, rgba(31, 111, 120, 0.25), transparent 68%);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(23, 33, 38, 0.06);
+        color: var(--muted);
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: "Fraunces", serif;
+        line-height: 0.96;
+      }
+
+      h1 {
+        margin-top: 18px;
+        font-size: clamp(3rem, 8vw, 5.6rem);
+        max-width: 9ch;
+      }
+
+      .hero p {
+        max-width: 70ch;
+        margin: 18px 0 0;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 1.02rem;
+      }
+
+      .hero-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 26px;
+      }
+
+      .hero-links a,
+      .jump-nav a,
+      .track-links a {
+        text-decoration: none;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.7);
+        transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+      }
+
+      .pill:hover,
+      .jump-nav a:hover,
+      .track-links a:hover {
+        transform: translateY(-2px);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      .panel {
+        border-radius: 22px;
+        padding: 22px;
+        animation: rise 700ms ease both;
+      }
+
+      .stat-value {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 700;
+      }
+
+      .stat-label {
+        margin-top: 6px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .jump-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 30px 0 10px;
+      }
+
+      .jump-nav a {
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.68);
+      }
+
+      .section-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 36px 0 18px;
+        animation: rise 720ms ease both;
+      }
+
+      .section-header p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.6;
+        max-width: 62ch;
+      }
+
+      .section-kicker {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+      }
+
+      .set-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .set-card {
+        border-radius: 24px;
+        padding: 22px;
+        display: grid;
+        gap: 18px;
+        animation: rise 760ms ease both;
+      }
+
+      .set-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 11px;
+        border-radius: 999px;
+        background: rgba(23, 33, 38, 0.07);
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .badge.lstm {
+        background: rgba(182, 93, 39, 0.12);
+        color: #7d3c15;
+      }
+
+      .badge.transformer {
+        background: rgba(31, 111, 120, 0.12);
+        color: #144f56;
+      }
+
+      .tracks {
+        display: grid;
+        gap: 14px;
+      }
+
+      .track-card {
+        border-radius: 18px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.68);
+      }
+
+      .track-card h3 {
+        font-size: 1.28rem;
+      }
+
+      .track-card p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .audio-stack {
+        display: grid;
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .audio-label {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 6px;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+
+      audio {
+        width: 100%;
+      }
+
+      .track-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .track-links a {
+        padding: 8px 11px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        background: rgba(23, 33, 38, 0.06);
+      }
+
+      .footer {
+        margin-top: 42px;
+        padding: 18px 4px 0;
+        color: var(--muted);
+        line-height: 1.7;
+        animation: rise 820ms ease both;
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 980px) {
+        .stats,
+        .set-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 700px) {
+        .shell {
+          width: min(100vw - 20px, 1180px);
+          padding-top: 14px;
+        }
+
+        .hero,
+        .panel,
+        .set-card {
+          padding: 20px;
+          border-radius: 20px;
+        }
+
+        .stats,
+        .set-grid {
+          grid-template-columns: 1fr;
+        }
+
+        h1 {
+          max-width: 10ch;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div class="eyebrow">MusicAI Showcase</div>
+        <h1>Piano generativo, comparado pieza a pieza.</h1>
+        <p>
+          Esta galeria recoge todos los ejemplos del trabajo final: 15 salidas del modelo
+          LSTM y 30 salidas del Music Transformer. Cada ejemplo incluye su archivo MIDI
+          original y una vista previa en MP3 para escucharlo directamente en el navegador.
+        </p>
+        <div class="hero-links">
+          <a class="pill" href="report/trabajo_final_deep_learning.pdf">Leer memoria final</a>
+          <a class="pill" href="report/propuesta-trabajo-music.pdf">Ver propuesta inicial</a>
+          <a class="pill" href="#lstm">Ir a la galeria</a>
+        </div>
+      </section>
+
+      <section class="stats">
+        <article class="panel">
+          <div class="stat-value">45</div>
+          <div class="stat-label">MIDIs originales versionados</div>
+        </article>
+        <article class="panel">
+          <div class="stat-value">45</div>
+          <div class="stat-label">Previews MP3 listas para escucha web</div>
+        </article>
+        <article class="panel">
+          <div class="stat-value">2</div>
+          <div class="stat-label">Arquitecturas comparadas sobre MAESTRO</div>
+        </article>
+        <article class="panel">
+          <div class="stat-value">26 MB</div>
+          <div class="stat-label">Tamano total aproximado de la galeria</div>
+        </article>
+      </section>
+
+      <nav class="jump-nav">
+        <a href="#lstm">LSTM</a>
+        <a href="#lstm-512">LSTM 512</a>
+        <a href="#lstm-1536">LSTM 1536</a>
+        <a href="#lstm-2048">LSTM 2048</a>
+        <a href="#transformer">Transformer</a>
+        <a href="#transformer-512">Transformer 512</a>
+        <a href="#transformer-1536">Transformer 1536</a>
+        <a href="#transformer-2048">Transformer 2048</a>
+      </nav>
+
+      <section class="section-header" id="lstm">
+        <div>
+          <div class="section-kicker">Modelo 1</div>
+          <h2>PerformanceRNN / LSTM</h2>
+          <p>
+            Implementacion recurrente inspirada en PerformanceRNN. Cada tarjeta incluye la
+            salida generada en MIDI y su preview comprimida en MP3 para escucharla sin salir
+            del navegador.
+          </p>
+        </div>
+      </section>
+
+      <section class="set-grid" id="lstm-grid"></section>
+
+      <section class="section-header" id="transformer">
+        <div>
+          <div class="section-kicker">Modelo 2</div>
+          <h2>Music Transformer con RPR</h2>
+          <p>
+            Implementacion basada en self-attention con Relative Position Representations.
+            En cada pieza se conserva el primer fragmento usado como arranque y la salida
+            generada por el modelo.
+          </p>
+        </div>
+      </section>
+
+      <section class="set-grid" id="transformer-grid"></section>
+
+      <p class="footer">
+        Nota: los MP3 son previews derivadas de los WAV originales para mantener el
+        repositorio ligero. Los archivos MIDI conservan la salida original del proyecto y
+        son la referencia mas fiel para reutilizar o volver a sintetizar el audio.
+      </p>
+    </main>
+
+    <script>
+      const lstmSets = [512, 1536, 2048];
+      const transformerSets = [512, 1536, 2048];
+      const pieces = [1, 2, 3, 4, 5];
+
+      function makeLink(href, label) {
+        const link = document.createElement("a");
+        link.href = href;
+        link.textContent = label;
+        return link;
+      }
+
+      function audioBlock(label, src) {
+        const wrap = document.createElement("div");
+        const header = document.createElement("div");
+        header.className = "audio-label";
+        header.innerHTML = `<span>${label}</span><span>MP3 preview</span>`;
+
+        const player = document.createElement("audio");
+        player.controls = true;
+        player.preload = "none";
+        player.src = src;
+
+        wrap.appendChild(header);
+        wrap.appendChild(player);
+        return wrap;
+      }
+
+      function renderLstm() {
+        const grid = document.getElementById("lstm-grid");
+
+        lstmSets.forEach((length) => {
+          const set = document.createElement("article");
+          set.className = "set-card";
+          set.id = `lstm-${length}`;
+          set.innerHTML = `
+            <div class="set-meta">
+              <div>
+                <span class="badge lstm">LSTM</span>
+                <h2>${length} tokens</h2>
+              </div>
+              <span class="badge">${pieces.length} piezas</span>
+            </div>
+          `;
+
+          const tracks = document.createElement("div");
+          tracks.className = "tracks";
+
+          pieces.forEach((piece) => {
+            const base = `showcase/assets/lstm/${length}/piece${piece}`;
+            const card = document.createElement("article");
+            card.className = "track-card";
+            card.innerHTML = `
+              <h3>Pieza ${piece}</h3>
+              <p>Salida generada por el modelo recurrente con una longitud de ${length} tokens.</p>
+            `;
+
+            const audio = document.createElement("div");
+            audio.className = "audio-stack";
+            audio.appendChild(audioBlock("Generated take", `${base}.mp3`));
+            card.appendChild(audio);
+
+            const links = document.createElement("div");
+            links.className = "track-links";
+            links.appendChild(makeLink(`${base}.mid`, "Descargar MIDI"));
+            links.appendChild(makeLink(`${base}.mp3`, "Abrir MP3"));
+            card.appendChild(links);
+
+            tracks.appendChild(card);
+          });
+
+          set.appendChild(tracks);
+          grid.appendChild(set);
+        });
+      }
+
+      function renderTransformer() {
+        const grid = document.getElementById("transformer-grid");
+
+        transformerSets.forEach((length) => {
+          const set = document.createElement("article");
+          set.className = "set-card";
+          set.id = `transformer-${length}`;
+          set.innerHTML = `
+            <div class="set-meta">
+              <div>
+                <span class="badge transformer">Transformer</span>
+                <h2>${length} tokens</h2>
+              </div>
+              <span class="badge">${pieces.length} piezas</span>
+            </div>
+          `;
+
+          const tracks = document.createElement("div");
+          tracks.className = "tracks";
+
+          pieces.forEach((piece) => {
+            const base = `showcase/assets/transformer/${length}/piece${piece}`;
+            const card = document.createElement("article");
+            card.className = "track-card";
+            card.innerHTML = `
+              <h3>Pieza ${piece}</h3>
+              <p>Incluye el fragmento inicial de condicionamiento y la continuacion generada por el Transformer.</p>
+            `;
+
+            const audio = document.createElement("div");
+            audio.className = "audio-stack";
+            audio.appendChild(audioBlock("Primer", `${base}/primer.mp3`));
+            audio.appendChild(audioBlock("Random continuation", `${base}/rand.mp3`));
+            card.appendChild(audio);
+
+            const links = document.createElement("div");
+            links.className = "track-links";
+            links.appendChild(makeLink(`${base}/primer.mid`, "Primer MIDI"));
+            links.appendChild(makeLink(`${base}/primer.mp3`, "Primer MP3"));
+            links.appendChild(makeLink(`${base}/rand.mid`, "Generated MIDI"));
+            links.appendChild(makeLink(`${base}/rand.mp3`, "Generated MP3"));
+            card.appendChild(links);
+
+            tracks.appendChild(card);
+          });
+
+          set.appendChild(tracks);
+          grid.appendChild(set);
+        });
+      }
+
+      renderLstm();
+      renderTransformer();
+    </script>
+  </body>
+</html>

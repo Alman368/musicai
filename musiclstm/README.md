@@ -8,7 +8,8 @@ Implementacion en PyTorch Lightning de una version tipo PerformanceRNN para gene
 - configuracion de entrenamiento en `config.yaml`
 - resumen de resultados en `training_results.txt`
 - grafica final en `final_training_metrics.png`
-- ejemplos ligeros en `examples/`
+
+Todos los ejemplos escuchables del proyecto estan centralizados en `docs/showcase/assets/` y en la galeria publicada desde `docs/index.html`.
 
 ## Que no incluye
 
@@ -27,7 +28,6 @@ musiclstm/
 │   ├── data.py
 │   ├── event_encoder.py
 │   └── trainer.py
-├── examples/
 ├── train.py
 ├── generate.py
 ├── visualize_training.py

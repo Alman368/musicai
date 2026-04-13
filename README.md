@@ -1,18 +1,19 @@
 # MusicAI
 
-Proyecto final de Deep Learning sobre generacion de musica de piano con dos enfoques:
+Proyecto final de Deep Learning sobre generacion de musica de piano comparando dos enfoques:
 
 - `musiclstm/`: implementacion tipo PerformanceRNN basada en LSTM
 - `musictransformer/`: implementacion Music Transformer con Relative Position Representations
 
-Esta version del repositorio esta preparada para GitHub a partir del trabajo final original. Se han conservado el codigo, la memoria, las metricas y ejemplos ligeros, dejando fuera datasets, checkpoints y pesos pesados para que el repo sea util y navegable.
+Esta version del repositorio esta preparada como portfolio en GitHub. Conserva el codigo, la memoria, las metricas y ahora tambien todos los ejemplos generados en un formato escuchable y ligero para web.
 
-## Documentacion
+## Lo mas importante
 
 - Memoria final: [docs/report/trabajo_final_deep_learning.pdf](docs/report/trabajo_final_deep_learning.pdf)
 - Fuente LaTeX: [docs/report/trabajo.tex](docs/report/trabajo.tex)
 - Propuesta inicial: [docs/report/propuesta-trabajo-music.pdf](docs/report/propuesta-trabajo-music.pdf)
 - Resumen comparativo: [COMPARISON_SUMMARY.md](COMPARISON_SUMMARY.md)
+- Galeria de escucha para GitHub Pages: [docs/index.html](docs/index.html)
 
 ## Resultados
 
@@ -26,22 +27,45 @@ Esta version del repositorio esta preparada para GitHub a partir del trabajo fin
 
 El Transformer fue el mejor modelo en calidad final, mientras que la LSTM resulto mas ligera y sencilla de entrenar y depurar.
 
+## Ejemplos completos
+
+Se han incluido todos los ejemplos generados:
+
+- 45 archivos `MIDI` originales
+- 45 previews `MP3` para escucha rapida en navegador
+
+Los audios convertidos ocupan aproximadamente 26 MB en total. Los `WAV` originales se han dejado fuera para que el repositorio siga siendo razonable de clonar y navegar.
+
+## GitHub Pages
+
+La forma mas limpia de escuchar todo es activar GitHub Pages para publicar la galeria incluida en `docs/`.
+
+Pasos:
+
+1. En GitHub, abre `Settings > Pages`.
+2. En `Build and deployment`, elige `Deploy from a branch`.
+3. Selecciona la rama `main`.
+4. Selecciona la carpeta `/docs`.
+5. Guarda la configuracion.
+
+GitHub permite publicar Pages desde la raiz del repositorio o desde `/docs`, asi que esta estructura esta preparada especificamente para usar `/docs` como fuente. Segun la documentacion oficial, los repositorios fuente de Pages tienen un limite recomendado de 1 GB y el sitio publicado no debe superar 1 GB, asi que esta galeria entra de sobra en un margen comodo.
+
+Fuentes:
+
+- https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+- https://docs.github.com/en/enterprise-cloud@latest/pages/getting-started-with-github-pages/github-pages-limits
+
 ## Estructura
 
 ```text
 musicai/
-├── docs/report/                  # Memoria, propuesta y figuras del trabajo
-├── COMPARISON_SUMMARY.md         # Resumen directo de la comparativa
-├── musiclstm/                    # Implementacion LSTM
-│   ├── performance_net/          # Codigo del modelo
-│   ├── examples/                 # MIDIs y un WAV de ejemplo
-│   └── final_training_metrics.png
-└── musictransformer/             # Implementacion Transformer
-    ├── model/                    # Arquitectura
-    ├── dataset/                  # Codigo de dataset
-    ├── utilities/                # Utilidades de entrenamiento
-    ├── examples/                 # MIDIs y un WAV de ejemplo
-    └── saved_models/results/     # CSV y mejores epochs
+├── docs/
+│   ├── index.html               # Galeria reproducible para GitHub Pages
+│   ├── showcase/assets/         # Todos los MIDIs y MP3s
+│   └── report/                  # Memoria, propuesta y figuras
+├── COMPARISON_SUMMARY.md
+├── musiclstm/                   # Implementacion LSTM
+└── musictransformer/            # Implementacion Transformer
 ```
 
 ## Lo que no se incluye
@@ -51,11 +75,11 @@ El entregable original superaba 1.3 GB e incluia:
 - dataset MAESTRO completo
 - checkpoints y pesos entrenados
 - logs de TensorBoard
-- grandes lotes de audio generado
+- `WAV` completos de trabajo
 
 Esos artefactos no estan versionados aqui para evitar un repositorio pesado y poco practico. Las rutas siguen documentadas en cada subproyecto por si se quiere reconstruir el entorno original.
 
-## Como reproducir
+## Reproducir los modelos
 
 ### LSTM
 
@@ -81,14 +105,3 @@ python train.py -input_dir dataset/e_piano -output_dir saved_models --rpr
 ```
 
 El dataset bruto se espera en `musictransformer/dataset/maestro/` y el dataset procesado en `musictransformer/dataset/e_piano/`.
-
-## Ejemplos y graficas
-
-Cada subcarpeta incluye algunos ejemplos ligeros en `examples/` y la grafica final de entrenamiento:
-
-- [musiclstm/final_training_metrics.png](musiclstm/final_training_metrics.png)
-- [musictransformer/final_training_metrics.png](musictransformer/final_training_metrics.png)
-
-![LSTM metrics](docs/report/lstm_metrics.png)
-
-![Transformer metrics](docs/report/transformer_metrics.png)

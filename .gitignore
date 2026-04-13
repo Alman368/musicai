@@ -18,3 +18,6 @@ musictransformer/generated_pieces/
 musictransformer/saved_models/weights/
 musictransformer/saved_models/tensorboard/
 musictransformer/saved_models/results/*.pickle
+
+# Audio previews are stored as MP3 in docs/showcase; avoid committing heavy WAV exports there.
+docs/showcase/assets/**/*.wav

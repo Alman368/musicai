@@ -9,7 +9,8 @@ Implementacion de Music Transformer con Relative Position Representations para g
 - utilidades CLI y entrenamiento en `utilities/`
 - scripts de entrenamiento, evaluacion, generacion y preprocesado
 - metricas finales y trazas ligeras en `saved_models/results/`
-- ejemplos ligeros en `examples/`
+
+Todos los ejemplos escuchables del proyecto estan centralizados en `docs/showcase/assets/` y en la galeria publicada desde `docs/index.html`.
 
 ## Que no incluye
 
@@ -30,7 +31,6 @@ musictransformer/
 │   └── e_piano.py
 ├── utilities/
 ├── third_party/midi_processor/
-├── examples/
 ├── saved_models/
 │   ├── model_params.txt
 │   └── results/
