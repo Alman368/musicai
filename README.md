@@ -12,6 +12,7 @@ Esta version del repositorio esta preparada como portfolio en GitHub. Conserva e
 - Memoria final: [docs/report/trabajo_final_deep_learning.pdf](docs/report/trabajo_final_deep_learning.pdf)
 - Fuente LaTeX: [docs/report/trabajo.tex](docs/report/trabajo.tex)
 - Propuesta inicial: [docs/report/propuesta-trabajo-music.pdf](docs/report/propuesta-trabajo-music.pdf)
+- Resumen comparativo: [COMPARISON_SUMMARY.md](COMPARISON_SUMMARY.md)
 - Galeria de escucha para GitHub Pages: [docs/index.html](docs/index.html)
 
 ## Resultados
